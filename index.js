@@ -61,10 +61,14 @@ wss.on('connection', (ws) => {
 })
 
 function broadcastGameState() {
+  let typeState = 'state'
+  if (Object.keys(gameState.scores).length === 0) {
+    typeState = 'reset'
+  }
   const message = JSON.stringify({
-    type: 'state',
+    type: typeState,
     data: gameState
-  });
+  })
   for (const client of clients) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(message)
